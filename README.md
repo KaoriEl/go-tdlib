@@ -16,7 +16,6 @@ the integration with different programming languages and platforms.
 **NOTE:** basic tdjson-golang binding is inspired from this package: [go-tdjson](https://github.com/L11R/go-tdjson)
 
 All the classes and functions declared in [Tdlib TypeLanguage schema](https://github.com/tdlib/td/blob/master/td/generate/scheme/td_api.tl)
-file have been exported using the autogenerate tool [tl-parser](https://github.com/Arman92/go-tl-parser).
 So you can use every single type and method in Tdlib.
 
 ## Key features:
@@ -46,9 +45,26 @@ I'm using static linking against tdlib so it won't require to build the whole td
 ## Docker
 You can use prebuilt tdlib with following Docker image: 
 
-***Windows:***
+***DockerFile with supervisord:***
 ``` shell
-docker pull mihaildemidoff/tdlib-go
+FROM jancimertel/golang-1.16-tdlib AS build
+
+WORKDIR ./var/www
+
+# Updates the repository and installs git
+RUN apk update && apk upgrade && \
+    apk add --no-cache git supervisor
+
+RUN apk update && apk add --no-cache supervisor
+
+COPY ./golang/supervisord.conf /etc/supervisord.conf
+
+
+COPY /%YourGoScript% .
+RUN go mod download
+
+# Runs the binary once the container starts
+CMD ["/usr/bin/supervisord", "-n"]
 ```
 
 ## Example
