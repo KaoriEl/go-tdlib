@@ -1,11 +1,13 @@
 # go-tdlib
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-7-orange.svg?style=flat-square)](#contributors-)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 Golang Telegram TdLib JSON bindings
 
 
 ## Introduction
+
+*Library for working with golang based on tdlib.
+
+This library was taken from the user Arman92 and changed for the current version of tdlib.*
+
 Telegram Tdlib is a complete library for creating telegram clients, it also has a simple tdjson ready-to-use library to ease
 the integration with different programming languages and platforms.
 
@@ -124,8 +126,4 @@ func main() {
 
 ```
 
-More examples can be found on [examples folder](https://github.com/Arman92/go-tdlib/tree/master/examples)
-
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+More examples can be found on [examples folder](https://github.com/KaoriEl/go-tdlib/tree/master/examples)
