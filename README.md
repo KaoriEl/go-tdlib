@@ -62,7 +62,7 @@ RUN apk update && apk upgrade && \
 
 RUN apk update && apk add --no-cache supervisor
 
-COPY ./golang/supervisord.conf /etc/supervisord.conf
+COPY ./%YourPath%/supervisord.conf /etc/supervisord.conf
 
 
 COPY /%YourGoScript% .
@@ -80,7 +80,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/Arman92/go-tdlib"
+	"github.com/kaoriEl/go-tdlib"
 )
 
 func main() {
