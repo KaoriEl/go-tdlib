@@ -4,9 +4,9 @@ Golang Telegram TdLib JSON bindings
 
 ## Introduction
 
-*Library for working with golang based on tdlib.
+*Library for working with golang based on tdlib.*
 
-This library was taken from the user Arman92 and changed for the current version of tdlib.*
+*This library was taken from the user Arman92 and changed for the current version of tdlib.*
 
 Telegram Tdlib is a complete library for creating telegram clients, it also has a simple tdjson ready-to-use library to ease
 the integration with different programming languages and platforms.
