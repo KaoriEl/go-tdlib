@@ -1,7 +1,12 @@
 # go-tdlib
 Golang Telegram TdLib JSON bindings
 
+## Install
 
+To install, you need to run inside a docker container (it is given below)
+```
+go get -u github.com/kaoriEl/go-tdlib
+```
 ## Introduction
 
 *Library for working with golang based on tdlib.*
