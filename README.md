@@ -29,24 +29,6 @@ So you can use every single type and method in Tdlib.
 * Supports all tdjson functions: Send(), Execute(), Receive(), Destroy(), SetFilePath(), SetLogVerbosityLevel()
 * Supports all tdlib functions and types
 
-## Installation
-
-First of all you need to clone the Tdlib repo and build it:
-```bash
-git clone git@github.com:tdlib/td.git --depth 1
-cd td
-mkdir build
-cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build . -- -j5
-make install
-
-# -j5 refers to number of your cpu cores + 1 for multi-threaded build.
-```
-
-If hit any build errors, refer to [Tdlib build instructions](https://github.com/tdlib/td#building)
-I'm using static linking against tdlib so it won't require to build the whole tdlib source files.
-
 ## Docker
 You can use prebuilt tdlib with following Docker image: 
 
