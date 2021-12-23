@@ -2,24 +2,24 @@ package main
 
 import (
 	"fmt"
-	"math"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
 
-	"github.com/Arman92/go-tdlib"
+	"github.com/Arman92/go-tdlib/v2/client"
+	"github.com/Arman92/go-tdlib/v2/tdlib"
 )
 
 var allChats []*tdlib.Chat
 var haveFullChatList bool
 
 func main() {
-	tdlib.SetLogVerbosityLevel(1)
-	tdlib.SetFilePath("./errors.txt")
+	client.SetLogVerbosityLevel(1)
+	client.SetFilePath("./errors.txt")
 
 	// Create new instance of client
-	client := tdlib.NewClient(tdlib.Config{
+	client := client.NewClient(client.Config{
 		APIID:               "187786",
 		APIHash:             "e782045df67ba48e441ccb105da8fc85",
 		SystemLanguageCode:  "en",
@@ -64,47 +64,37 @@ func main() {
 	}
 }
 
-// see https://stackoverflow.com/questions/37782348/how-to-use-getchats-in-tdlib
-func getChatList(client *tdlib.Client, limit int) error {
+func getChatList(client *client.Client, limit int) error {
+	var chatList = tdlib.NewChatListMain()
 
-	if !haveFullChatList && limit > len(allChats) {
-		offsetOrder := int64(math.MaxInt64)
-		offsetChatID := int64(0)
-		var chatList = tdlib.NewChatListMain()
-		var lastChat *tdlib.Chat
+	chats, err := client.GetChats(chatList, int32(limit))
+	if err != nil {
+		return err
+	}
 
-		if len(allChats) > 0 {
-			lastChat = allChats[len(allChats)-1]
-			for i := 0; i < len(lastChat.Positions); i++ {
-				//Find the main chat list
-				if lastChat.Positions[i].List.GetChatListEnum() == tdlib.ChatListMainType {
-					offsetOrder = int64(lastChat.Positions[i].Order)
-				}
-			}
-			offsetChatID = lastChat.ID
-		}
-
+	for len(chats.ChatIDs) != limit {
 		// get chats (ids) from tdlib
-		chats, err := client.GetChats(chatList, tdlib.JSONInt64(offsetOrder),
-			offsetChatID, int32(limit-len(allChats)))
+		_, err := client.LoadChats(chatList, int32(limit-len(chats.ChatIDs)))
 		if err != nil {
+			if err.(tdlib.RequestError).Code != 404 {
+				chats, err = client.GetChats(chatList, int32(limit))
+				break
+			}
 			return err
 		}
-		if len(chats.ChatIDs) == 0 {
-			haveFullChatList = true
-			return nil
-		}
 
-		for _, chatID := range chats.ChatIDs {
-			// get chat info from tdlib
-			chat, err := client.GetChat(chatID)
-			if err == nil {
-				allChats = append(allChats, chat)
-			} else {
-				return err
-			}
-		}
-		return getChatList(client, limit)
+		chats, err = client.GetChats(chatList, int32(limit))
 	}
+
+	for _, chatID := range chats.ChatIDs {
+		// get chat info from tdlib
+		chat, err := client.GetChat(chatID)
+		if err == nil {
+			allChats = append(allChats, chat)
+		} else {
+			return err
+		}
+	}
+
 	return nil
 }
