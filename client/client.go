@@ -285,7 +285,7 @@ func (client *Client) SendAndCatch(jsonQuery interface{}) (tdlib.UpdateMsg, erro
 
 		return response, nil
 		// or timeout
-	case <-time.After(10 * time.Second):
+	case <-time.After(60 * time.Second):
 		client.waitersLock.Lock()
 		delete(client.waiters, randomString)
 		client.waitersLock.Unlock()
